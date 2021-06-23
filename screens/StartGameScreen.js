@@ -1,24 +1,53 @@
-import React from "react";
-import { View, StyleSheet, Text, TextInput, Button } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  Button,
+  Keyboard,
+} from "react-native";
 import Card from "../components/Card";
+import Input from "../components/input";
 
 const StartGameScreen = (props) => {
+  const [enteredValue, setEnteredValue] = useState("");
+
+  const numberInputHandler = (inputText) => {
+    setEnteredValue(inputText.replace(/[^0-9]/g, ""));
+  };
+
   return (
-    <View style={styles.screen}>
-      <Text style={styles.title}>Start a New Game !</Text>
-      <Card style={styles.inputContainer}>
-        <Text>Select a Number</Text>
-        <TextInput />
-        <View style={styles.buttonContainer}>
-          <View style={styles.buttons}>
-            <Button color="#f7287b" title="Confirm" />
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
+      <View style={styles.screen}>
+        <Text style={styles.title}>Start a New Game !</Text>
+        <Card style={styles.inputContainer}>
+          <Text>Select a Number</Text>
+          <Input
+            style={styles.input}
+            keyboardType="numeric"
+            blurOnSubmit
+            autoCapitalize="none"
+            autoCorrect={false}
+            maxLength={2}
+            onChangeText={numberInputHandler}
+            value={enteredValue}
+          />
+          <View style={styles.buttonContainer}>
+            <View style={styles.buttons}>
+              <Button color="#f7287b" title="Confirm" />
+            </View>
+            <View style={styles.buttons}>
+              <Button color="#c717fc" title="Reset" />
+            </View>
           </View>
-          <View style={styles.buttons}>
-            <Button color="#c717fc" title="Reset" />
-          </View>
-        </View>
-      </Card>
-    </View>
+        </Card>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -45,6 +74,9 @@ const styles = StyleSheet.create({
   },
   buttons: {
     width: "40%",
+  },
+  input: {
+    width: 60,
   },
 });
 
